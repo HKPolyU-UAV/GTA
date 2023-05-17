@@ -85,8 +85,8 @@ void gta_ns::TrackingNodelet::imgsyn_cb(const sensor_msgs::CompressedImage::Cons
 
                 if(prob > 0.93)
                 {
-                    int depthbox_w = potential[maxElementIndex].rect.width * 0.35;
-                    int depthbox_h = potential[maxElementIndex].rect.height * 0.35;
+                    int depthbox_w = potential[maxElementIndex].rect.width * 0.30;
+                    int depthbox_h = potential[maxElementIndex].rect.height * 0.30;
                     depthbox_vertice1 = cv::Point(potential[maxElementIndex].center_bdbox.x - depthbox_w / 2, potential[maxElementIndex].center_bdbox.y - depthbox_w / 2);
                     depthbox_vertice2 = cv::Point(potential[maxElementIndex].center_bdbox.x + depthbox_w / 2, potential[maxElementIndex].center_bdbox.y + depthbox_h / 2);
                     center_true = cv::Point(interested.x + interested.width / 2, interested.y + interested.height / 2);
@@ -299,7 +299,7 @@ void gta_ns::TrackingNodelet::pcl_cb(const livox_ros_driver::CustomMsg::ConstPtr
         double precTick = ticks;
         ticks = (double)cv::getTickCount();
         dT = (ticks - precTick) / cv::getTickFrequency(); // seconds
-        // dT = 0.03;
+        // dT = 0.008;
         cout<<"dT: "<<dT<<" ms"<<endl;
         // >>>> Matrix A
         kf.transitionMatrix.at<float>(3) = dT;
@@ -480,22 +480,6 @@ void gta_ns::TrackingNodelet::pcl_cb(const livox_ros_driver::CustomMsg::ConstPtr
             }
             else 
             {
-                // vector<Point> dbscan_points;
-                // for (int i = 0; i < obj_pc->points.size(); i++)
-                // {
-                //     Point temp_point;
-                //     temp_point.x = obj_pc->points[i].x;
-                //     temp_point.y = obj_pc->points[i].y;
-                //     temp_point.z = obj_pc->points[i].z;
-                //     temp_point.clusterID = UNCLASSIFIED;
-                //     dbscan_points.push_back(temp_point);
-                // }
-                // Cluster
-                // DBSCAN ds(MINIMUM_POINTS, EPSILON, dbscan_points);
-                // ds.run();
-                // dbscan_points.clear();
-                // dbscan_points = ds.getMaxClusteredPoints();
-                // CalculateCentroid(dbscan_points, pc_meas_pos);
                 cluster(obj_pc, pc_meas_pos);
             }
             //************cluster based on prediction****************
@@ -706,11 +690,11 @@ void gta_ns::TrackingNodelet::pcl_cb(const livox_ros_driver::CustomMsg::ConstPtr
 void gta_ns::TrackingNodelet::PTfilter(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_track, double cluster_size)
 {
     float x_low, y_low, z_low, x_up, y_up, z_up;
-    x_low = state_true[0]-0.25 * cluster_size;
-    y_low = state_true[1]-0.3 * cluster_size;
+    x_low = state_true[0]-0.4 * cluster_size;
+    y_low = state_true[1]-0.4 * cluster_size;
     z_low = state_true[2]-0.3 * cluster_size;
-    x_up = state_true[0]+0.25 * cluster_size;
-    y_up = state_true[1]+0.6 * cluster_size;
+    x_up = state_true[0]+0.4 * cluster_size;
+    y_up = state_true[1]+0.7 * cluster_size;
     z_up = state_true[2]+0.3 * cluster_size;
     pcl::PassThrough<pcl::PointXYZ> pt;
     // for(int i = 0; i<11; i++)
@@ -756,8 +740,8 @@ void gta_ns::TrackingNodelet::cluster(pcl::PointCloud<pcl::PointXYZ>::Ptr in_pcl
     std::vector<pcl::PointIndices> cluster_indices;
     pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
     ec.setClusterTolerance(0.06); // 10cm
-    ec.setMinClusterSize(2);
-    ec.setMaxClusterSize(50);
+    ec.setMinClusterSize(3);
+    ec.setMaxClusterSize(60);
     ec.setSearchMethod(tree);
     ec.setInputCloud(in_pcl);
     ec.extract(cluster_indices);
@@ -786,7 +770,7 @@ void gta_ns::TrackingNodelet::cluster(pcl::PointCloud<pcl::PointXYZ>::Ptr in_pcl
         }
         Vector4f centroid_int;
         pcl::compute3DCentroid(*cloud_cluster, centroid_int);
-        if(centroid_int[0] > 0 && centroid_int[0]<=4.0)
+        if(centroid_int[0] > 0 && centroid_int[0]<=4.5)
         {
             obj_pc_pos[0] = centroid_int[0];
             obj_pc_pos[1] = centroid_int[1];
@@ -859,19 +843,5 @@ void gta_ns::TrackingNodelet::removeZeros(pcl::PointCloud<pcl::PointXYZ>::Ptr pc
     obj_pc->is_dense = true;
 }
 
-// void gta_ns::TrackingNodelet::CalculateCentroid(vector<Point> dbscan_points, Vec3 &pc_meas_pos)
-// {
-//     double x = 0, y = 0, z = 0;
-//     for(int i=0; i<dbscan_points.size(); i++)
-//     {
-//         x = x+dbscan_points[i].x;
-//         y = y+dbscan_points[i].x;
-//         z = z+dbscan_points[i].x;
-//     }
-//     pc_meas_pos[0] = x/dbscan_points.size();
-//     pc_meas_pos[1] = y/dbscan_points.size();
-//     pc_meas_pos[2] = z/dbscan_points.size();
-//     cluster_true = true;
-// }
 
 
