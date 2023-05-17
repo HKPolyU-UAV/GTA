@@ -1,0 +1,1 @@
+rosbag record -o ball_4.bag /camera/color/image_raw/compressed /camera/aligned_depth_to_color/image_raw /camera/aligned_depth_to_color/camera_info /livox/lidar /vrpn_client_node/gh034_ball_lhj/pose /vrpn_client_node/gh034_ugv_lhj/pose

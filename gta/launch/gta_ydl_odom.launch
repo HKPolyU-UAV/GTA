@@ -1,0 +1,39 @@
+<launch>
+
+<!--gta######################################################################################################-->
+    <!-- <arg name="node_start_delay"  default="5.0" /> -->
+
+    <!-- Manager -->
+    <node pkg="nodelet" type="nodelet" args="manager" 
+          name="Mg" output="screen"  
+          launch-prefix="bash -c 'sleep 1; $0 $@' ">
+          <param name="num_worker_threads" value="6" />
+    </node>
+
+
+    <!-- TrackingNodelet -->
+    <node pkg="nodelet" type="nodelet" args="load gta/TrackingNodelet Mg" 
+          name="TrackingNodelet" output="screen" 
+          launch-prefix="bash -c 'sleep 2; $0 $@' ">
+
+          <param name="/parampath"    type="string"   value = "/home/luo/gtanodelet/src/GTA/gta/yolov4-tiny-opt.param"/>
+          <param name="/binpath"      type="string"   value = "/home/luo/gtanodelet/src/GTA/gta/yolov4-tiny-opt.bin"/>
+          <param name="/target_size"  type="int"      value = "416" />
+          <param name="/yamlconfigfile" type="string" value="$(find gta)/launch/yaml/extrinsic.yaml"/>
+    </node>
+
+    <!-- OdomNodelet -->
+    <node pkg="nodelet" type="nodelet" args="load gta/OdomNodelet Mg" 
+          name="OdomNodelet" output="screen" 
+          launch-prefix="bash -c 'sleep 2; $0 $@' ">
+
+          <param name="/yamlconfigfile" type="string" value="$(find gta)/launch/yaml/extrinsic.yaml"/>
+          <remap from="/state_input" to="/obj_pos_body" />
+    </node>
+    
+
+
+<!-- rviz####################################################################################################### -->
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find pedol)/launch/rviz/pedol_visual.rviz" /> -->
+
+</launch>

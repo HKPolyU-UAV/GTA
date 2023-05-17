@@ -1,0 +1,24 @@
+<library path = "lib/libgta">
+
+    <class name="gta/TrackingNodelet" type ="gta_ns::TrackingNodelet" 
+           base_class_type = "nodelet::Nodelet">
+        <description> This is TrackingNodelet. </description>
+    </class>
+
+    <class name="gta/VisualizationNodelet" type ="gta_ns::VisualizationNodelet" 
+           base_class_type = "nodelet::Nodelet">
+        <description> This is VisualizationNodelet. </description>
+    </class>
+
+    <class name="gta/OdomNodelet" type ="gta_ns::OdomNodelet" 
+           base_class_type = "nodelet::Nodelet">
+        <description> This is OdomNodelet. </description>
+    </class>
+
+    <!-- <class name="gta/YoloNode" type ="gta_ns::YoloNode" 
+           base_class_type = "nodelet::Nodelet">
+        <description> This is YoloNode. </description>
+    </class> -->
+
+
+</library>

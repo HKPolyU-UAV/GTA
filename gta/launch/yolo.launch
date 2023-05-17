@@ -1,0 +1,27 @@
+<launch>
+
+<!--pedol######################################################################################################-->
+
+
+    <!-- Manager -->
+    <node pkg="nodelet" type="nodelet" args="manager" name="Mg" output="screen"  >
+        
+    </node>
+
+    
+
+    <!-- TrackingKFNodeletClass -->
+    <node pkg="nodelet" type="nodelet" args="load gta/YoloNode Mg" name="YoloNode" output="screen" >
+        <param name="/parampath"    type="string"   value = "/home/luo/gtanodelet/src/GTA/gta/yolov4-tiny-opt.param"/>
+        <param name="/binpath"      type="string"   value = "/home/luo/gtanodelet/src/GTA/gta/yolov4-tiny-opt.bin"/>
+        <param name="/target_size"  type="int"      value = "416" />
+    </node>
+
+
+    
+
+
+<!-- rviz####################################################################################################### -->
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find pedol)/launch/rviz/pedol_visual.rviz" /> -->
+
+</launch>

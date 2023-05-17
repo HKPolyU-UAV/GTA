@@ -1,0 +1,46 @@
+<launch>
+
+<!--gta######################################################################################################-->
+    <!-- <arg name="node_start_delay"  default="5.0" /> -->
+
+    <!-- Manager -->
+    <node pkg="nodelet" type="nodelet" args="manager" 
+          name="Mg" output="screen"  
+          launch-prefix="bash -c 'sleep 1; $0 $@' ">
+          <param name="num_worker_threads" value="6" />
+    </node>
+
+    
+
+    <!-- YoloNodeletClass -->
+    <node pkg="nodelet" type="nodelet" args="load gta/YoloNodeletClass Mg" 
+          name="YoloNodeletClass" output="screen" 
+          launch-prefix="bash -c 'sleep 1; $0 $@' ">
+        <param name="/parampath"    type="string"   value = "/home/luo/gtanodelet/src/GTA/gta/yolov4-tiny-opt.param"/>
+        <param name="/binpath"      type="string"   value = "/home/luo/gtanodelet/src/GTA/gta/yolov4-tiny-opt.bin"/>
+        <param name="/target_size"  type="int"      value = "416" />
+    </node>
+
+    <!-- LidarNodeletClass -->
+    <node pkg="nodelet" type="nodelet" args="load gta/LidarNodeletClass Mg" 
+          name="LidarNodeletClass" output="screen" 
+          launch-prefix="bash -c 'sleep 1; $0 $@' ">
+        <param name="/yamlconfigfile" type="string" value="$(find gta)/launch/yaml/extrinsic.yaml"/>
+        <remap from="/lidar/obj_input" to="/obj_box_vertices" />
+    </node>
+
+    <!-- TrackerNodeletClass -->
+    <node pkg="nodelet" type="nodelet" args="load gta/TrackerNodeletClass Mg" 
+          name="TrackerNodeletClass" output="screen" 
+          launch-prefix="bash -c 'sleep 2; $0 $@' ">
+          <remap from="/pc_input" to="/obj_pointcloud" />
+    </node>
+
+
+    
+
+
+<!-- rviz####################################################################################################### -->
+    <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find pedol)/launch/rviz/pedol_visual.rviz" /> -->
+
+</launch>
