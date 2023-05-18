@@ -697,7 +697,7 @@ void gta_ns::TrackingNodelet::PTfilter(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_t
     y_up = state_true[1]+0.7 * cluster_size;
     z_up = state_true[2]+0.3 * cluster_size;
     pcl::PassThrough<pcl::PointXYZ> pt;
-    // for(int i = 0; i<11; i++)
+    // for(int i = 0; i<11; i++) 
     // {
     //     cout<<"pointcloud sample: "<< pcl_track->points[i+50]<<endl;
     // }
