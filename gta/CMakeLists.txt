@@ -83,6 +83,7 @@ add_library(gta
   src/gta_ydl.cpp
   src/visualization.cpp
   src/To_odometry.cpp
+  src/record.cpp
 
   #vis
 )

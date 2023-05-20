@@ -15,6 +15,11 @@
         <description> This is OdomNodelet. </description>
     </class>
 
+    <class name="gta/RecordNodelet" type ="gta_ns::RecordNodelet" 
+           base_class_type = "nodelet::Nodelet">
+        <description> This is RecordNodelet. </description>
+    </class>
+
     <!-- <class name="gta/YoloNode" type ="gta_ns::YoloNode" 
            base_class_type = "nodelet::Nodelet">
         <description> This is YoloNode. </description>

@@ -30,6 +30,12 @@
           <param name="/yamlconfigfile" type="string" value="$(find gta)/launch/yaml/extrinsic.yaml"/>
           <remap from="/state_input" to="/obj_pos_body" />
     </node>
+
+    <!-- RecordNodelet -->
+    <!-- <node pkg="nodelet" type="nodelet" args="load gta/RecordNodelet Mg" 
+          name="RecordNodelet" output="screen" 
+          launch-prefix="bash -c 'sleep 2; $0 $@' ">
+    </node> -->
     
 
 

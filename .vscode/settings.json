@@ -10,5 +10,9 @@
         "/opt/ros/noetic/lib/python3/dist-packages"
     ],
     "git.allowNoVerifyCommit": true,
-    "git.allowForcePush": true
+    "git.allowForcePush": true,
+    "files.associations": {
+        "iostream": "cpp",
+        "iomanip": "cpp"
+    }
 }
